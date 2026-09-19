@@ -19,9 +19,16 @@ hello,world!
 
 ---
 
-cd F:\qyeBlog\astrowind
-npm run dev #运行
-npm run build #重构
+rebuild and restart the Docker deployment:
+cd D:\bloger\Personal-Blog
+docker compose up -d --build
+
+To check its status and logs:
+docker compose ps
+docker compose logs -f astrowind
+If Docker keeps showing an old cached version:
+docker compose build --no-cache
+docker compose up -d
 
 push:
 git add .

@@ -1,0 +1,32 @@
+---
+import Layout from '~/layouts/PageLayout.astro';
+
+const metadata = { title: 'Projects Repository' };
+
+const projects = [
+  { title: 'Life System', href: 'https://lifeSystem.qingtaors.top' },
+  { title: 'English Learner', href: 'https://ENleaner.qingtaors.top' },
+];
+---
+
+<Layout metadata={metadata}>
+  <section class="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:py-16">
+    <h1 class="text-3xl font-bold tracking-tight sm:text-4xl">Projects Repository</h1>
+
+    <div class="mt-8 grid gap-4 sm:grid-cols-2">
+      {
+        projects.map((project) => (
+          <a
+            class="group rounded-2xl border border-white/30 bg-white/40 p-6 text-lg font-semibold shadow-sm backdrop-blur-xl transition hover:-translate-y-0.5 hover:bg-white/60 hover:text-link dark:border-white/10 dark:bg-slate-900/40 dark:hover:bg-slate-900/60 dark:hover:text-white"
+            href={project.href}
+          >
+            <span>{project.title}</span>
+            <span class="ml-2" aria-hidden="true">
+              →
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </section>
+</Layout>

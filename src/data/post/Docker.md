@@ -1,5 +1,5 @@
 ---
-title: 'Redis'
+title: 'Docker'
 
 publishDate: 2026-4-23
 
@@ -9,7 +9,7 @@ draft: true
 
 excerpt: '' # 摘抄
 
-category: 'Data & Persistence'
+category: 'DevOps/Cloud'
 
 author: 'QYep'
 

@@ -1,15 +1,15 @@
 ---
-title: 'axios.fetch'
+title: 'JVM'
 
 publishDate: 2026-4-23
 
 updateDate: 2026-4-23
 
-draft: true
+draft: false
 
 excerpt: '' # 摘抄
 
-category: 'Frontend & Full-Stack Interaction'
+category: 'Backend'
 
 author: 'QYep'
 

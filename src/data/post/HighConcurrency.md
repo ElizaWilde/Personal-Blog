@@ -9,7 +9,7 @@ draft: false
 
 excerpt: '' # 摘抄
 
-category: 'Concurrency, Async & Distributed'
+category: 'Architecture'
 
 author: 'QYep'
 

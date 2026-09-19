@@ -1,5 +1,5 @@
 ---
-title: 'Docker'
+title: 'MQ (Kafka/RabbitMQ)'
 
 publishDate: 2026-4-23
 
@@ -9,13 +9,11 @@ draft: true
 
 excerpt: '' # 摘抄
 
-category: 'Infrastructure & Operations'
+category: 'Architecture'
 
 author: 'QYep'
 
 metadata: {}
----
-
 ---
 
 ---

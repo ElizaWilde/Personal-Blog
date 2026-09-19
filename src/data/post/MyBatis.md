@@ -1,5 +1,5 @@
 ---
-title: 'JavaScript (ES6)'
+title: 'MyBatis'
 
 publishDate: 2026-4-23
 
@@ -9,7 +9,7 @@ draft: true
 
 excerpt: '' # 摘抄
 
-category: 'Frontend & Full-Stack Interaction'
+category: 'DB'
 
 author: 'QYep'
 

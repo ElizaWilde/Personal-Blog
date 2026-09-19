@@ -7,8 +7,11 @@ import { BLOG_BLOCKS } from '~/config/blog-blocks';
 const posts = await fetchPosts();
 
 const blocks = (BLOG_BLOCKS || []).map((block) => {
-  const count = posts.filter((post) => post.category?.title === block.title).length;
-  return { ...block, count };
+  const children = block.children.map((child) => ({
+    ...child,
+    count: posts.filter((post) => post.category?.title === child.title).length,
+  }));
+  return { ...block, children, count: children.reduce((total, child) => total + child.count, 0) };
 });
 
 const metadata = {
@@ -25,23 +28,42 @@ const metadata = {
       <p class="mt-3 text-sm opacity-80 sm:text-base">Browse notes by the core knowledge block they belong to.</p>
     </div>
 
-    <div class="mt-8 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+    <div class="mt-8 grid gap-6 lg:grid-cols-2">
       {
-        blocks.map((block, index) => (
-          <a
-            href={getPermalink(block.slug, 'category')}
-            class="rounded-2xl border border-white/30 bg-white/40 p-5 shadow-sm backdrop-blur-xl transition hover:bg-white/60 dark:border-white/10 dark:bg-slate-900/40 dark:hover:bg-slate-900/60"
+        blocks.map((block) => (
+          <section
+            id={block.slug}
+            class="scroll-mt-28 rounded-2xl border border-white/30 bg-white/40 p-6 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/40"
           >
             <div class="flex items-start justify-between gap-4">
               <div>
-                <div class="text-xs font-medium uppercase tracking-[0.18em] opacity-60">Block {index + 1}</div>
-                <div class="mt-2 text-xl font-semibold">{block.title}</div>
+                <div class="text-xs font-medium uppercase tracking-[0.18em] opacity-60">Root block</div>
+                <h2 class="mt-2 text-2xl font-semibold">
+                  <a class="hover:underline" href={getPermalink(block.slug, 'category')}>
+                    {block.title}
+                  </a>
+                </h2>
+                <p class="mt-2 text-sm opacity-75">{block.description}</p>
               </div>
               <div class="rounded-full border border-white/30 px-3 py-1 text-sm dark:border-white/10">
                 {block.count} posts
               </div>
             </div>
-          </a>
+
+            {block.children.length > 0 && (
+              <div class="mt-5 grid gap-2 sm:grid-cols-2">
+                {block.children.map((child) => (
+                  <a
+                    href={getPermalink(child.slug, 'category')}
+                    class="rounded-xl border border-white/30 bg-white/30 p-3 transition hover:bg-white/60 dark:border-white/10 dark:bg-slate-900/30 dark:hover:bg-slate-900/60"
+                  >
+                    <div class="font-medium">{child.title}</div>
+                    <div class="mt-1 text-xs opacity-60">{child.count} posts</div>
+                  </a>
+                ))}
+              </div>
+            )}
+          </section>
         ))
       }
     </div>
