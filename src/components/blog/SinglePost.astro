@@ -1,6 +1,4 @@
 ---
-import { Icon } from 'astro-icon/components';
-
 import Image from '~/components/common/Image.astro';
 import PostTags from '~/components/blog/Tags.astro';
 import SocialShare from '~/components/common/SocialShare.astro';
@@ -18,86 +16,153 @@ export interface Props {
 const { post, url } = Astro.props;
 ---
 
-<section class="py-8 sm:py-16 lg:py-20 mx-auto">
+<section class="mx-auto py-2 sm:py-4">
   <article>
-    <header
-      class={post.image
-        ? 'intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade'
-        : 'intersect-once intersect-quarter motion-safe:md:opacity-0 motion-safe:md:intersect:animate-fade'}
-    >
-      <div class="flex justify-between flex-col sm:flex-row max-w-3xl mx-auto mt-0 mb-2 px-4 sm:px-6 sm:items-center">
-        <p>
-          <Icon name="tabler:clock" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
-          <time datetime={String(post.publishDate)} class="inline-block">{getFormattedDate(post.publishDate)}</time>
-          {
-            post.author && (
-              <>
-                {' '}
-                · <Icon name="tabler:user" class="w-4 h-4 inline-block -mt-0.5 dark:text-gray-400" />
-                <span class="inline-block">{post.author}</span>
-              </>
-            )
-          }
-          {
-            post.category && (
-              <>
-                {' '}
-                ·{' '}
-                <a class="hover:underline inline-block" href={getPermalink(post.category.slug, 'category')}>
-                  {post.category.title}
-                </a>
-              </>
-            )
-          }
-          {
-            post.readingTime && (
-              <>
-                &nbsp;· <span>{post.readingTime}</span> min read
-              </>
-            )
-          }
-        </p>
-      </div>
+    <header class="mx-auto max-w-3xl px-2 sm:px-4">
+      <h1 class="text-xl font-bold leading-tight tracking-tight sm:text-2xl lg:text-3xl">{post.title}</h1>
 
-      <h1
-        class="px-4 sm:px-6 max-w-3xl mx-auto text-4xl md:text-5xl font-bold leading-tighter tracking-tighter font-heading"
-      >
-        {post.title}
-      </h1>
-      <p
-        class="max-w-3xl mx-auto mt-4 mb-8 px-4 sm:px-6 text-xl md:text-2xl text-muted dark:text-slate-400 text-justify"
-      >
-        {post.excerpt}
+      <p class="mt-3 text-xs italic leading-5 text-muted sm:text-sm">
+        {
+          post.category && (
+            <>
+              Filed under{' '}
+              <a
+                class="font-semibold text-default not-italic hover:underline"
+                href={getPermalink(post.category.slug, 'category')}
+              >
+                {post.category.title}
+              </a>{' '}
+            </>
+          )
+        }
+        on <time class="text-default not-italic" datetime={String(post.publishDate)}
+          >{getFormattedDate(post.publishDate)}</time
+        >.
+        {
+          post.updateDate && (
+            <>
+              {' '}
+              Last updated on{' '}
+              <time class="text-default not-italic" datetime={String(post.updateDate)}>
+                {getFormattedDate(post.updateDate)}
+              </time>
+              .
+            </>
+          )
+        }
+        {
+          post.author && (
+            <>
+              {' '}
+              Written by <span class="text-default not-italic">{post.author}</span>.
+            </>
+          )
+        }
+        {
+          post.readingTime && (
+            <>
+              {' '}
+              <span class="not-italic">{post.readingTime} min read.</span>
+            </>
+          )
+        }
       </p>
 
+      {post.excerpt && <p class="mt-4 max-w-3xl text-sm leading-6 text-muted">{post.excerpt}</p>}
+
       {
-        post.image ? (
+        post.image && (
           <Image
             src={post.image}
-            class="max-w-full lg:max-w-[900px] mx-auto mb-6 sm:rounded-md bg-gray-400 dark:bg-slate-700"
-            widths={[400, 900]}
-            sizes="(max-width: 900px) 400px, 900px"
-            alt={post?.excerpt || ''}
-            width={900}
-            height={506}
+            class="mt-8 max-w-full rounded-xl bg-gray-400 shadow-sm dark:bg-slate-700"
+            widths={[640, 1200]}
+            sizes="(max-width: 768px) 640px, 1200px"
+            alt={post.excerpt || post.title}
+            width={1200}
+            height={675}
             loading="eager"
             decoding="async"
           />
-        ) : (
-          <div class="max-w-3xl mx-auto px-4 sm:px-6">
-            <div class="border-t dark:border-slate-700" />
-          </div>
         )
       }
     </header>
-    <div
-      class="mx-auto px-6 sm:px-6 max-w-3xl prose prose-md lg:prose-xl dark:prose-invert dark:prose-headings:text-slate-300 prose-headings:font-heading prose-headings:leading-tighter prose-headings:tracking-tighter prose-headings:font-bold prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-md prose-img:shadow-lg mt-8 prose-headings:scroll-mt-[80px] prose-li:my-0"
-    >
-      <slot />
-    </div>
-    <div class="mx-auto px-6 sm:px-6 max-w-3xl mt-8 flex justify-between flex-col sm:flex-row">
-      <PostTags tags={post.tags} class="mr-5 rtl:mr-0 rtl:ml-5" />
-      <SocialShare url={url} text={post.title} class="mt-5 sm:mt-1 align-middle text-gray-500 dark:text-slate-600" />
+
+    <div class="mx-auto mt-8 max-w-7xl px-2 sm:px-4 xl:grid xl:grid-cols-[12rem_minmax(0,48rem)_12rem] xl:gap-x-12">
+      <div class="mx-auto min-w-0 max-w-3xl xl:col-start-2 xl:mx-0">
+        <div
+          data-post-body
+          class="prose prose-sm max-w-none text-default dark:prose-invert dark:prose-headings:text-slate-200 prose-headings:scroll-mt-28 prose-headings:font-heading prose-headings:font-bold prose-headings:leading-tight prose-headings:tracking-tight prose-h2:mt-10 prose-h2:text-xl prose-h3:mt-7 prose-h3:text-lg prose-p:leading-6 prose-a:text-primary dark:prose-a:text-blue-400 prose-img:rounded-xl prose-img:shadow-lg prose-li:my-0.5"
+        >
+          <slot />
+        </div>
+
+        <div
+          class="mt-12 flex flex-col justify-between gap-5 border-t border-gray-200 pt-6 dark:border-slate-700 sm:flex-row"
+        >
+          <PostTags tags={post.tags} class="mr-5 rtl:mr-0 rtl:ml-5" />
+          <SocialShare url={url} text={post.title} class="text-gray-500 dark:text-slate-500" />
+        </div>
+      </div>
+
+      <aside
+        data-post-toc
+        hidden
+        class="hidden w-48 xl:sticky xl:top-24 xl:col-start-3 xl:row-start-1 xl:block xl:max-h-[calc(100vh-7rem)] xl:self-start xl:overflow-y-auto"
+      >
+        <h2 class="text-xs font-bold uppercase tracking-[0.16em] text-default">Table of contents</h2>
+        <nav class="mt-4" aria-label="Table of contents">
+          <ol data-post-toc-list class="space-y-2.5 text-xs leading-5 text-muted"></ol>
+        </nav>
+      </aside>
     </div>
   </article>
 </section>
+
+<script>
+  const buildPostTableOfContents = () => {
+    const body = document.querySelector<HTMLElement>('[data-post-body]');
+    const toc = document.querySelector<HTMLElement>('[data-post-toc]');
+    const list = document.querySelector<HTMLOListElement>('[data-post-toc-list]');
+
+    if (!body || !toc || !list) return;
+
+    const headings = Array.from(body.querySelectorAll<HTMLElement>('h2[id], h3[id]'));
+    list.replaceChildren();
+
+    if (headings.length === 0) {
+      toc.hidden = true;
+      return;
+    }
+
+    const links = headings.map((heading, index) => {
+      const item = document.createElement('li');
+      if (heading.tagName === 'H3') item.className = 'pl-3';
+
+      const link = document.createElement('a');
+      link.href = `#${heading.id}`;
+      link.textContent = heading.textContent?.trim() || heading.id;
+      link.className = 'block transition hover:text-primary';
+      if (index === 0) link.classList.add('text-primary');
+
+      item.append(link);
+      list.append(item);
+      return link;
+    });
+
+    toc.hidden = false;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries.find((entry) => entry.isIntersecting);
+        if (!visible) return;
+        links.forEach((link) => link.classList.toggle('text-primary', link.hash === `#${visible.target.id}`));
+      },
+      { rootMargin: '-20% 0px -70% 0px' }
+    );
+
+    headings.forEach((heading) => observer.observe(heading));
+  };
+
+  document.addEventListener('astro:page-load', buildPostTableOfContents);
+  buildPostTableOfContents();
+</script>
