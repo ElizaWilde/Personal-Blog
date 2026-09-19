@@ -1,5 +1,5 @@
 ---
-title: ''
+title: 'API'
 
 publishDate: 2026-09-19
 
