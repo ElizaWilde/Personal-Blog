@@ -8,7 +8,10 @@ const latest = posts.slice(0, 6);
 
 const blocks = (BLOG_BLOCKS || []).map((block) => ({
   ...block,
-  count: posts.filter((post) => (post.category?.title || '').trim() === block.title).length,
+  children: block.children.map((child) => ({
+    ...child,
+    count: posts.filter((post) => (post.category?.title || '').trim() === child.title).length,
+  })),
 }));
 ---
 
@@ -60,21 +63,39 @@ const blocks = (BLOG_BLOCKS || []).map((block) => ({
         </div>
       </div>
 
-      <!-- Block chips -->
+      <!-- Root blocks -->
       <div class="mt-8">
         <div class="text-lg font-semibold tracking-tight opacity-85 sm:text-xl">Blocks</div>
-        <div class="mt-4 flex flex-wrap items-stretch gap-3">
+        <div class="mt-4 grid gap-4 lg:grid-cols-2">
           {
             blocks.length === 0 ? (
               <span class="text-sm opacity-70">No blocks configured.</span>
             ) : (
               blocks.map((block) => (
-                <a
-                  class="inline-flex min-h-12 items-center rounded-full border border-white/30 bg-white/30 px-5 py-2.5 text-base font-medium leading-none backdrop-blur-md transition hover:bg-white/60 dark:border-white/10 dark:bg-slate-900/30 dark:hover:bg-slate-900/60 sm:text-lg"
-                  href={getPermalink(block.slug, 'category')}
+                <section
+                  id={block.slug}
+                  class="scroll-mt-28 rounded-2xl border border-white/30 bg-white/30 p-5 backdrop-blur-md dark:border-white/10 dark:bg-slate-900/30"
                 >
-                  {block.title}
-                </a>
+                  <h2 class="text-xl font-bold">
+                    <a class="hover:underline" href={getPermalink(block.slug, 'category')}>
+                      {block.title}
+                    </a>
+                  </h2>
+                  <p class="mt-2 text-sm opacity-75">{block.description}</p>
+                  {block.children.length > 0 && (
+                    <div class="mt-4 flex flex-wrap gap-2">
+                      {block.children.map((child) => (
+                        <a
+                          class="inline-flex min-h-11 items-center rounded-full border border-white/30 bg-white/30 px-4 py-2 text-sm font-medium leading-none transition hover:bg-white/60 dark:border-white/10 dark:bg-slate-900/30 dark:hover:bg-slate-900/60"
+                          href={getPermalink(child.slug, 'category')}
+                        >
+                          {child.title}
+                          {child.count > 0 && <span class="ml-1.5 opacity-60">{child.count}</span>}
+                        </a>
+                      ))}
+                    </div>
+                  )}
+                </section>
               ))
             )
           }

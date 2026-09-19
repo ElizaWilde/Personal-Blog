@@ -1,5 +1,5 @@
 ---
-title: 'SpringCloud'
+title: 'Redis'
 
 publishDate: 2026-4-23
 
@@ -9,7 +9,7 @@ draft: true
 
 excerpt: '' # 摘抄
 
-category: 'Concurrency, Async & Distributed'
+category: 'DB'
 
 author: 'QYep'
 

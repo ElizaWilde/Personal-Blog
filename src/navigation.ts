@@ -1,4 +1,4 @@
-import { getPermalink, getBlogPermalink } from './utils/permalinks';
+import { getPermalink } from './utils/permalinks';
 
 export const headerData = {
   links: [
@@ -6,14 +6,19 @@ export const headerData = {
 
     {
       text: 'Blog',
-      links: [{ text: 'Blog List', href: getBlogPermalink() }],
+      href: getPermalink('/Blog-repo'),
+      links: [
+        { text: 'Agent', href: getPermalink('agent', 'category') },
+        { text: 'Full-stack', href: getPermalink('full-stack', 'category') },
+      ],
     },
 
     {
-      text: 'Pages',
+      text: 'Projects',
+      href: getPermalink('/Projects-repo'),
       links: [
-        { text: 'Category Page', href: getPermalink('/category') },
-        { text: 'Tag Page', href: getPermalink('astro', 'tag') },
+        { text: 'Life System', href: 'https://lifeSystem.qingtaors.top' },
+        { text: 'English Learner', href: 'https://ENleaner.qingtaors.top' },
       ],
     },
 
@@ -36,14 +41,6 @@ export const footerData = {
       href: 'mailto:qye9828@gmail.com',
       label: 'qye9828@gmail.com',
       copyText: 'qye9828@gmail.com',
-    },
-    {
-      ariaLabel: 'QQ',
-      icon: 'tabler:brand-qq',
-      href: 'https://wpa.qq.com/msgrd?v=3&uin=12345678&site=qq&menu=yes',
-      label: '2188832247',
-      copyText: '2188832247',
-      qrSrc: '/qq.png',
     },
   ],
 

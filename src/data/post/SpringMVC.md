@@ -9,7 +9,7 @@ draft: false
 
 excerpt: '' # 摘抄
 
-category: 'Web & API Layer'
+category: 'API design'
 # Foundation, Framework, Web, Data
 # Concurrency ⭐, Infrastructure, Frontend, System Design ⭐, AI ⭐
 

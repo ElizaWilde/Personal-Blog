@@ -1,15 +1,15 @@
 ---
-title: 'JVM'
+title: 'Linux'
 
 publishDate: 2026-4-23
 
 updateDate: 2026-4-23
 
-draft: false
+draft: true
 
 excerpt: '' # 摘抄
 
-category: 'Programming & Runtime Foundation'
+category: 'DevOps/Cloud'
 
 author: 'QYep'
 

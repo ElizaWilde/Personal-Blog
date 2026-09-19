@@ -9,7 +9,7 @@ draft: true
 
 excerpt: '' # 摘抄
 
-category: 'Infrastructure & Operations'
+category: 'DevOps/Cloud'
 
 author: 'QYep'
 
