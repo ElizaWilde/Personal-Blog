@@ -1,1 +1,216 @@
-A personal blog + devlog to record my projects, bugs, fixes, notes, and progress updates.
+# Personal Blog
+
+A personal blog and devlog for recording projects, bugs, fixes, notes, and progress updates.
+
+## Maybe you want to use it
+
+### How to deploy it locally
+
+The easiest method is Docker Compose. From the project directory, run:
+
+```powershell
+docker compose up -d --build
+```
+
+Open [http://localhost:8080](http://localhost:8080).
+
+After changing code or Markdown content, run the same command again to rebuild and update the container:
+
+```powershell
+docker compose up -d --build
+```
+
+If Docker continues to show an older cached version, rebuild without the cache:
+
+```powershell
+docker compose build --no-cache
+docker compose up -d
+```
+
+Useful Docker commands:
+
+```powershell
+docker compose ps
+docker compose logs -f astrowind
+docker compose down
+```
+
+To run the project without Docker:
+
+```powershell
+npm install
+npm run dev
+```
+
+The Astro development server normally opens at [http://localhost:4321](http://localhost:4321).
+
+### How to add or remove root blocks and sub-blocks
+
+All block definitions are in:
+
+```text
+src/config/blog-blocks.ts
+```
+
+#### Add an empty root block
+
+Add an item to `BLOG_BLOCK_DEFINITIONS`:
+
+```ts
+{
+  title: 'New-root',
+  description: 'Description of the new root block.',
+  children: [NEW_ROOT_SUB_BLOCKS],
+},
+```
+
+Create the matching content directory:
+
+```text
+src/data/post/New-root/
+```
+
+The root page is generated automatically from its title.
+
+#### Add a New-root sub-block
+
+Add an item to `NEW_ROOT_SUB_BLOCKS`:
+
+```ts
+{
+  title: 'Performance',
+  description: 'performance testing.',
+},
+```
+
+Create its content directory:
+
+```text
+src/data/post/New-root/Performance/
+```
+
+Posts in this block must use the exact title in their frontmatter:
+
+```yaml
+category: 'Performance'
+```
+
+The block page is generated automatically at `/category/performance`.
+
+
+#### Remove a block
+
+1. Remove its definition from `src/config/blog-blocks.ts`.
+2. Reassign or remove posts that use the block's category.
+3. Remove its content directory when it is empty.
+4. Run `npm run build` to confirm no post uses an invalid category.
+
+Do not remove a configured category while posts still reference it. The content schema requires every non-empty `category` value to match a configured sub-block title exactly.
+
+### How to add, edit, move, or remove files in blocks
+
+Posts are Markdown files stored recursively under:
+
+```text
+src/data/post/
+```
+
+#### Automatically initialize a new post
+
+Start the post watcher before creating the file:
+
+```powershell
+npm run watch:posts
+```
+
+Keep that terminal running. When an empty `.md` file is created anywhere below `src/data/post`, the watcher automatically adds:
+
+- `title`, based on the filename
+- `publishDate`, using today's date
+- `updateDate`, using today's date
+- `category`, based on the immediate parent folder
+- `draft: false`
+- `author: 'Eliza'`
+- the standard excerpt and metadata fields
+
+For example, creating:
+
+```text
+src/data/post/Full-stack/API design/REST.md
+```
+
+sets:
+
+```yaml
+title: 'REST'
+category: 'API design'
+draft: false
+author: 'Eliza'
+```
+
+The watcher only initializes empty new Markdown files. It does not overwrite files that already contain text. The correct directory is `src/data/post`, not `src/data/pos`.
+
+The parent folder must represent a configured block. Existing folder aliases such as `DevOps&Cloud` and `Test` are normalized to the configured category names `DevOps/Cloud` and `Testing`.
+
+For example:
+
+```text
+src/data/post/Full-stack/API design/API.md
+```
+
+This file is published at:
+
+```text
+/blog/full-stack/api-design/api
+```
+
+#### Add a post
+
+Create a `.md` file in the appropriate block directory:
+
+```md
+---
+title: 'REST API Design'
+publishDate: 2026-09-21
+updateDate: 2026-09-21
+draft: false
+excerpt: 'Notes about designing reliable REST APIs.'
+category: 'API design'
+author: 'Eliza'
+tags: []
+metadata: {}
+---
+
+Write the article here.
+```
+
+Important rules:
+
+- `title` is required.
+- `category` must exactly match a configured sub-block title.
+- Set `draft: true` to keep an unfinished post out of the generated website.
+- Set `draft: false` when the post is ready to publish.
+- Markdown `h2` and `h3` headings automatically appear in the article's table of contents.
+- Every Markdown file must end with a newline so the Prettier check passes.
+
+#### Move or rename a post
+
+Move or rename the Markdown file, then rebuild the site. Because the relative file path is used in the post URL, moving or renaming a file changes its URL.
+
+Update the post's `category` if it moves to a different sub-block.
+
+#### Remove a post
+
+Delete its Markdown file and rebuild the site:
+
+```powershell
+npm run build
+```
+
+#### Validate changes before committing
+
+```powershell
+npx prettier --write "src/data/post/path/to/post.md"
+npm run check
+npm run build
+```

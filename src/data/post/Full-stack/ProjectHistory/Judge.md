@@ -17,13 +17,3 @@ author: 'Eliza'
 
 metadata: {}
 ---
-
----
-
-撰写新文章时：
-
-复制\_template.md→my-post.md
-
-Astro automatically supplies missing dates, category, draft status, and author when it loads a post.
-
----

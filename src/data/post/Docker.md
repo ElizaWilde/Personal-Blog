@@ -9,9 +9,9 @@ draft: true
 
 excerpt: '' # 摘抄
 
-category: 'DevOps/Cloud'
+category: 'DevOps&Cloud'
 
-author: 'QYep'
+author: 'Eliza'
 
 metadata: {}
 ---

@@ -11,7 +11,7 @@ excerpt: '' # 摘抄
 
 category: 'Backend'
 
-author: 'QYep'
+author: 'Eliza'
 
 metadata: {}
 ---
@@ -52,5 +52,6 @@ Same interface, different behavior.
 ```
 Animala=newDog();
 ```
+
 
 ---

@@ -10,10 +10,8 @@ draft: false
 excerpt: '' # 摘抄
 
 category: 'API design'
-# Foundation, Framework, Web, Data
-# Concurrency ⭐, Infrastructure, Frontend, System Design ⭐, AI ⭐
 
-author: 'QYep'
+author: 'Eliza'
 
 metadata: {}
 ---
