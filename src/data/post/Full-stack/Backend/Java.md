@@ -53,6 +53,6 @@ Same interface, different behavior.
 Animala=newDog();
 ```
 
-
 ---
+
 ---

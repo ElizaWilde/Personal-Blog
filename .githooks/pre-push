@@ -1,0 +1,10 @@
+#!/bin/sh
+set -eu
+cd "$(git rev-parse --show-toplevel)"
+echo "Checking formatting with Docker..."
+if ! docker compose run --rm --build -T formatter --check .; then
+  echo "Formatting check failed. Ensure Docker is running, then fix formatting with:"
+  echo "  docker compose run --rm --build formatter"
+  echo "Review and commit the fixes, then push again."
+  exit 1
+fi

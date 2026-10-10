@@ -44,6 +44,31 @@ npm run dev
 
 The Astro development server normally opens at [http://localhost:4321](http://localhost:4321).
 
+### Formatting before pushing
+
+Start Docker Desktop, then fix formatting without installing Node.js or npm:
+
+```powershell
+docker compose run --rm --build formatter
+```
+
+Review and commit the formatting changes before pushing. To check without changing files:
+
+```powershell
+docker compose run --rm --build formatter --check .
+```
+
+Enable the formatting safeguard once per clone:
+
+```powershell
+git config core.hooksPath .githooks
+```
+
+The pre-push hook runs the Docker formatting check and blocks the push if it fails.
+Docker must be running. The first run builds the dependency image; later runs reuse the cache.
+Git hooks do not run for edits made directly on GitHub, so GitHub Actions still checks formatting.
+Git and VS Code use LF line endings. Use the Docker formatter to match the version in the project lockfile; a different locally installed Prettier version can produce different formatting.
+
 ### How to add or remove root blocks and sub-blocks
 
 All block definitions are in:
@@ -96,7 +121,6 @@ category: 'Performance'
 ```
 
 The block page is generated automatically at `/category/performance`.
-
 
 #### Remove a block
 
