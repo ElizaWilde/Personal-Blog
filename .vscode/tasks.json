@@ -4,8 +4,8 @@
     {
       "label": "watch posts template",
       "type": "shell",
-      "command": "cmd",
-      "args": ["/c", "npm", "run", "watch:posts"],
+      "command": "docker",
+      "args": ["compose", "run", "--rm", "-T", "post-templates"],
       "options": {
         "cwd": "${workspaceFolder}"
       },

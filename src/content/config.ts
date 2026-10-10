@@ -3,14 +3,12 @@ import { basename, dirname, extname } from 'node:path';
 import { z, defineCollection } from 'astro:content';
 import { glob } from 'astro/loaders';
 import type { Loader } from 'astro/loaders';
+import postConfig from '../../post.config.json';
 
 const POST_PATTERN = ['**/*.md', '**/*.mdx'];
 const POST_BASE = 'src/data/post';
-const DEFAULT_AUTHOR = 'Eliza';
-const CATEGORY_TITLE_BY_FOLDER: Record<string, string> = {
-  'DevOps&Cloud': 'DevOps/Cloud',
-  Test: 'Testing',
-};
+const DEFAULT_AUTHOR = postConfig.author;
+const CATEGORY_TITLE_BY_FOLDER: Record<string, string> = postConfig.categoryByFolder;
 
 const postGlobLoader = glob({ pattern: POST_PATTERN, base: POST_BASE });
 

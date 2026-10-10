@@ -12,6 +12,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
+    "init:posts": "node scripts/post-templates.mjs",
+    "watch:posts": "node scripts/post-templates.mjs --watch",
     "check": "npm run check:astro && npm run check:eslint && npm run check:prettier",
     "check:astro": "astro check",
     "check:eslint": "eslint .",

@@ -190,6 +190,31 @@ This file is published at:
 
 #### Add a post
 
+Empty `.md` and `.mdx` files under `src/data/post` can receive a template automatically.
+The watcher runs during `npm run dev`. VS Code also starts a Docker watcher when this folder opens
+(Docker Desktop must be running; allow automatic workspace tasks if prompted).
+To start it manually without Node.js:
+
+```powershell
+docker compose run --rm -T post-templates
+```
+
+Keep that command running while creating posts. It checks every second, including new nested folders.
+Without Docker, use `npm run watch:posts`.
+To initialize empty files once, use `npm run init:posts` or `docker compose run --rm formatter`.
+The formatter's `--check` mode does not generate or modify posts.
+
+Edit `post.config.json` to change the default `author` (initially `Eliza`), date `timeZone`,
+or optional category folder aliases. Templates use the filename without its extension as `title`,
+the file creation date as `publishDate`, its modification date as `updateDate`, `draft: false`,
+and the immediate parent folder as `category`. Files directly inside `post` get an empty category.
+`DevOps&Cloud` maps to the configured site category `DevOps/Cloud`.
+Dates use `YYYY-MM-DD` in the configured timezone. Once written, metadata stays editable;
+the watcher does not rewrite it or update dates on later edits.
+Only empty files or files containing an empty `---` frontmatter block are initialized;
+existing article content and metadata are preserved. Changing the default author affects future
+templates and posts without an explicit author, not existing frontmatter.
+
 Create a `.md` file in the appropriate block directory:
 
 ```md
@@ -210,7 +235,7 @@ Write the article here.
 
 Important rules:
 
-- `title` is required.
+- Explicit metadata overrides the automatic defaults. Missing titles default to the filename.
 - `category` must exactly match a configured sub-block title.
 - Set `draft: true` to keep an unfinished post out of the generated website.
 - Set `draft: false` when the post is ready to publish.

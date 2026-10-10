@@ -6,6 +6,7 @@ services:
       - 8080:8080
 
   formatter:
+    image: personal-blog-formatter
     profiles: [tools]
     build:
       context: .
@@ -14,5 +15,11 @@ services:
     volumes:
       - .:/app
       - /app/node_modules
-    entrypoint: [node, node_modules/prettier/bin/prettier.cjs]
+    entrypoint: [node, scripts/format.mjs]
     command: [--write, .]
+
+  post-templates:
+    extends:
+      service: formatter
+    entrypoint: [node, scripts/post-templates.mjs]
+    command: [--watch]
