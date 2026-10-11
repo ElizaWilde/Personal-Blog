@@ -18,6 +18,12 @@ export default {
         serif: ['var(--aw-font-serif, ui-serif)', ...defaultTheme.fontFamily.serif],
         heading: ['var(--aw-font-heading, ui-sans-serif)', ...defaultTheme.fontFamily.sans],
       },
+      fontSize: {
+        xs: ['18px', '1.6'],
+        sm: ['18px', '1.6'],
+        base: ['18px', '1.6'],
+        lg: ['18px', '1.6'],
+      },
 
       animation: {
         fade: 'fadeInUp 1s both',

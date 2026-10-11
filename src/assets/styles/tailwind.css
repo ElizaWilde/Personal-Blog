@@ -2,6 +2,38 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  body {
+    font-family: var(--aw-font-sans), ui-sans-serif, system-ui, sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+  }
+}
+
+/* Keep page titles and article text consistent across utility and prose styles. */
+body h1,
+body h1[class],
+body .prose h1 {
+  font-family: var(--aw-font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-size: 36px;
+  line-height: 1.2;
+}
+
+body .prose {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+body .prose :where(p, li, blockquote, table) {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
+body p[class] {
+  font-size: 18px;
+  line-height: 1.6;
+}
+
 @layer utilities {
   .bg-page {
     background-color: var(--aw-color-bg-page);
