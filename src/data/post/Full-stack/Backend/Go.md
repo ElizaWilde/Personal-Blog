@@ -1,72 +1,89 @@
-# 简介
+---
+title: 'Go'
 
-原生并发：Goroutine 与 Channel
-静态类型语言（所有变量类型在编译时即确定）但支持类型推断
-内置垃圾回收（GC）：使用并发三色标记-清扫算法
-易部署：编译器支持交叉编译（跨平台编译）
-应用领域：云原生与基础设施、微服务与 API 开发、CLI 工具开发、网络编程与分布式系统、区块链、AI 与机器学习（新兴领域）
+publishDate: 2026-9-23
 
-## 变量、常量 与 Arr, Slice, Map
+updateDate: 2026-10-12
 
-- 变量
+draft: false
+
+excerpt: '' # 摘抄
+
+category: 'Backend'
+
+author: 'Eliza'
+
+metadata: {}
+---
+# Introduction
+
+- Native concurrency: Goroutines and Channels
+Statically typed language (all variable types are determined at compile time), but supports type inference
+- Built-in garbage collection (GC): uses a concurrent tri-color mark-and-sweep algorithm
+- Easy deployment: the compiler supports cross-compilation (compiling for different platforms)
+- Application areas: cloud-native systems and infrastructure, microservices and API development, CLI tools, network programming and distributed systems, blockchain, AI and machine learning (emerging area)
+
+## Variables, Constants, and Arrays, Slices, Maps
+
+- Variables
   ```go
   var b, c int = 1, 2
-  # 短变量声明是局部变量的初始化声明-仅限函数内部，且必须在该代码块中使用，未使用会编译错误）但全局变量允许声明但不使用
-  a := 10 //短变量声明
-  # 全局变量与局部变量名称可以相同，但是函数内的局部变量会被优先考虑
-  # 类型转换
-  //数值
+  # Short variable declarations initialize local variables—only allowed inside functions, and the variables must be used within the code block; otherwise, compilation fails. Global variables may be declared without being used.
+  a := 10 // Short variable declaration
+  # Global and local variables can have the same name, but the local variable takes precedence inside the function.
+  # Type conversion
+  // Numeric
   var a int = 10
   var b float64 = float64(a)
-  //字符串
+  // String
   var str string = "10"
   var num int
-  num, _ = strconv.Atoi(str)//该函数返回两个值(转换后的值，可能的错误),使用_ 来忽略这个错误
+  num, _ = strconv.Atoi(str)// This function returns two values (the converted value and a possible error); use _ to ignore the error.
   ```
-- 常量（组）
+- Constants (groups)
   ```go
-  const a [int] = 10 //常量定义,可选类型
+  const a [int] = 10 // Constant declaration; type is optional
   const (
       Unknown = 0
       Female  = 1
       Male    = 2
-  )//常量组定义（实现enum）
+  )// Constant group declaration (implements an enum-like pattern)
   const (
       a = iota   // 0
-      b          // 1（省略值，默认使用上一行的 iota）
+      b          // 1 (value omitted; uses iota from the previous line by default)
       c          // 2
-      d = "ha"   // 独立值，iota += 1
-  )//iota(常量计数器,const的行索引) 从 0 开始，每行加 1
-  # iota可以参与位移运算：j = 3 << iota  // 3 << 1 = 6
+      d = "ha"   // Independent value; iota += 1
+  )// iota (constant counter, the line index within a const block) starts at 0 and increases by 1 on each line
+  # iota can be used in bit-shift operations: j = 3 << iota  // 3 << 1 = 6
   ```
-- 数组
+- Arrays
 
   ```go
-  //初始化一维数组：指定元素类型及个数
+  // Initialize a one-dimensional array: specify the element type and number of elements
   var numbers [5]int
   var numbers = [5]int{1, 2, 3, 4, 5}
-  balance := [5]float32{1:2.0,3:7.0}//指定下标初始化元素
-  numbers := [...]int{1, 2, 3, 4, 5}//不确定长度的数组用...代替长度
-  //多维数组
-  a := [3][4]int{  //三行四列
-  {0, 1, 2, 3} ,   /*  第一行索引为 0 */
-  {4, 5, 6, 7} ,   /*  第二行索引为 1 */
-  {8, 9, 10, 11},   /* 第三行索引为 2 */
+  balance := [5]float32{1:2.0,3:7.0}// Initialize elements at specified indices
+  numbers := [...]int{1, 2, 3, 4, 5}// Use ... instead of a length when the array length is inferred
+  // Multidimensional arrays
+  a := [3][4]int{  // Three rows and four columns
+  {0, 1, 2, 3} ,   /* First row, index 0 */
+  {4, 5, 6, 7} ,   /* Second row, index 1 */
+  {8, 9, 10, 11},   /* Third row, index 2 */
   }
-  b := [2][3][4]int{ //两个（三行四列的平面）
-      { // 第一个平面
+  b := [2][3][4]int{ // Two 3-row, 4-column planes
+      { // First plane
               {1, 2, 3, 4},
               {5, 6, 7, 8},
               {9, 10, 11, 12},
           },
-          { // 第二个平面
+          { // Second plane
               {13, 14, 15, 16},
               {17, 18, 19, 20},
               {21, 22, 23, 24},
           },
   }
-  //数组的遍历
-  # _是 Go 语言的空白标识符，意思是：“忽略此值”, 避免未使用变量警告
+  // Iterating over arrays
+  # _ is Go's blank identifier, meaning "ignore this value"; it avoids errors for unused variables.
   package main
   import "fmt"
   func main() {
@@ -89,77 +106,77 @@
 
   ```
 
-- 切片slice(动态数组)
-  - new(T) 为类型 T 分配零值存储空间，并返回 \*T
-  - make 专门用于初始化 slice、map 和 channel，返回初始化后的type
+- Slices (dynamic arrays)
+  - `new(T)` allocates zero-initialized storage for type T and returns \*T
+  - `make` is specifically used to initialize slices, maps, and channels, returning the initialized type
   ```go
-  //定义
+  // Declaration
   var slice1 []type
   var slice2 []type = make([]type, len)
-  slice1 := make([]int, len, cap)//len长度，cap容量
-  //初始化
+  slice1 := make([]int, len, cap)// len: length; cap: capacity
+  // Initialization
   s :=[] int {1,2,3 } // cap=len=3
-  s := arr[startIndex:endIndex] //数组的引用：所以说如果两个slice可以共享一个底层数组
+  s := arr[startIndex:endIndex] // References an array: two slices can therefore share the same underlying array
   ```
-- 集合
-  - 哈希表结构，通过 key 的 hash 来快速定位数据。当多个 key 产生哈希冲突时，runtime 需要进一步进行冲突处理和 key 比较。
+- Maps
+  - A hash-table structure that quickly locates data using a key's hash. When multiple keys cause hash collisions, the runtime must perform additional collision handling and key comparisons.
 
   ```go
-  # 引用类型；无序；键不存在，返回该类型的零值
-  //定义：make(map[KeyType]ValueType, initialCapacity)
+  # Reference type; unordered; if a key does not exist, returns the zero value of the value type
+  // Declaration: make(map[KeyType]ValueType, initialCapacity)
   m := make(map[string]int, 10)
   m := map[string]int{
       "apple": 1,
       "banana": 2,
       "orange": 3,
   }
-  //删除
+  // Deletion
   delete(m,"apple")
   ```
 
-  - 普通 Go map 不应该在没有同步机制的情况下进行并发读写，这可能产生**数据竞争**，并且 runtime 还可能直接检测到并报 fatal error，例如 concurrent map read and map write。
-  - 如果多个 goroutine 需要读写同一个 map，需要通过 Mutex、RWMutex 等方式同步，或者在适合的场景使用 sync.Map。
-    - 通用方案：map + Mutex/RWMutex，数据结构和锁策略都由开发者自己控制，可读性也比较直接。
-    - sync.Map 是标准库提供的并发 Map，但它针对特定并发访问模式进行了优化（例如某些读多写少或者不同 goroutine 操作不同 key 的缓存场景），并不是所有场景都应该使用。
+  - Ordinary Go maps should not be read and written concurrently without synchronization. This can cause **data races**, and the runtime may directly detect the problem and raise a fatal error, such as `concurrent map read and map write`.
+  - If multiple goroutines need to read and write the same map, synchronize access using `Mutex`, `RWMutex`, etc., or use `sync.Map` in appropriate scenarios.
+    - General-purpose approach: `map` + `Mutex`/`RWMutex`. The developer controls both the data structure and locking strategy, which is also relatively straightforward to understand.
+    - `sync.Map` is a concurrent map provided by the standard library, but it is optimized for specific concurrent access patterns (such as certain read-heavy caches or caches where different goroutines operate on different keys). It is not appropriate for every scenario.
 
-## 流程、函数、结构体
+## Control Flow, Functions, and Structs
 
-- 流程、指针
+- Control flow and pointers
 
   ```go
-  # 控制流程：if、for 和 switch 三种，没有 while 关键字
-  # Go 没有三目运算符，所以不支持 ?: 形式的条件判断
-  // 指针（空指针为nil）
+  # Control flow: three constructs—if, for, and switch; there is no while keyword
+  # Go has no ternary operator, so ?: conditional expressions are not supported
+  // Pointers (a nil pointer has the value nil)
   package main
   import "fmt"
   func main() {
-      var a int= 20   /* 声明实际变量 */
-      var ip *int        /* 声明指针变量 */
+      var a int= 20   /* Declare an ordinary variable */
+      var ip *int        /* Declare a pointer variable */
 
-      ip = &a  /* 指针变量的存储地址 */
+      ip = &a  /* Store the address in the pointer variable */
 
-      fmt.Printf("a 变量的地址是: %x\n", &a  )
+      fmt.Printf("Address of variable a: %x\n", &a  )
 
-      /* 指针变量的存储地址 */
-      fmt.Printf("ip 变量储存的指针地址: %x\n", ip )
+      /* Address stored in the pointer variable */
+      fmt.Printf("Pointer address stored in ip: %x\n", ip )
 
-      /* 使用指针访问值 */
-      fmt.Printf("*ip 变量的值: %d\n", *ip )
+      /* Access the value through the pointer */
+      fmt.Printf("Value of *ip: %d\n", *ip )
   }
   ```
 
-- 函数
+- Functions
   ```go
-  //函数使用 func 关键字声明，支持多返回值（Go 错误处理机制的基础）
+  // Functions are declared using the func keyword and support multiple return values (the foundation of Go's error-handling mechanism)
   func swap(x, y string) (string, string) {
       return y, x
   }
-  # 递归:函数调用自身, 迭代:循环结构重复执行代码块
+  # Recursion: a function calls itself; iteration: a loop repeatedly executes a block of code
   ```
-- 结构体
+- Structs
 
   ```go
-  //没有类的概念，使用 struct（结构体）组织数据，可以为struct类型定义方法
+  // Go has no concept of classes; use structs to organize data, and define methods on struct types
   type Books struct {
       title string
       author string
@@ -168,9 +185,9 @@
   PrintBook(&Book1)
   ```
 
-  - Go Struct 和 Java Class
-    - Java class 把字段、方法以及传统面向对象机制结合在一起，并**支持类继承**
-    - Go 没有 class，而是使用 struct 表示数据结构，通过给类型定义 method 来添加行为；**不支持类继承**，更倾向于**组合**；抽象通常通过 interface 实现--好处：减少复杂的继承层次，让类型之间更多通过组合和接口建立关系
+  - Go Struct vs. Java Class
+    - A Java class combines fields, methods, and traditional object-oriented mechanisms, and **supports class inheritance**.
+    - Go has no `class`. Instead, it uses `struct` to represent data structures and adds behavior by defining methods on types. It **does not support class inheritance** and favors **composition**. Abstraction is usually achieved through interfaces. Benefit: fewer complex inheritance hierarchies, with relationships between types built more through composition and interfaces.
 
     ```java
     class User {
@@ -189,11 +206,11 @@
         }
     ```
 
-## 继承、接口、泛型
+## Inheritance, Interfaces, and Generics
 
-- 接口
-  - Interface 描述的是一组行为，也就是 method set
-  - **隐式实现**：只要一个类型实现了接口中所有方法，它就自动满足该接口，无需显式声明 implements
+- Interfaces
+  - An interface describes a set of behaviors, also called a method set.
+  - **Implicit implementation**: as long as a type implements all the methods in an interface, it automatically satisfies that interface; no explicit `implements` declaration is required.
 
   ```go
       //define
@@ -209,7 +226,7 @@
       }
   ```
 
-  - 实现解耦(-> Java's DI)：Interface 让上层业务依赖抽象行为，而不是依赖具体实现。同时提高可测试性和可替换性。
+  - Enables decoupling (-> Java's DI): interfaces let higher-level business logic depend on abstract behavior rather than concrete implementations. They also improve testability and replaceability.
 
   ```plain
       Service
@@ -220,21 +237,21 @@
       PostgreSQL   Redis       Mock
   ```
 
-- 泛型
-- 继承
+- Generics
+- Inheritance
 
-## 错误处理、文件处理
+## Error Handling and File Handling
 
-- 错误处理
-- 文件处理
+- Error handling
+- File handling
 
-## 并发
+## Concurrency
 
-通过 goroutines 和 channels实现并发：
+Concurrency is implemented through goroutines and channels:
 
-- Goroutines:轻量级线程，调度由Golang运行时管理
+- Goroutines: lightweight threads scheduled by the Go runtime
   ```plain
-  大量 Goroutine
+  Many Goroutines
       ↓
   Go Scheduler
       ↓
@@ -242,11 +259,11 @@
       ↓
       CPU
   ```
-- Channel:Go 提供的 Goroutine 之间**数据通信(Communication) + 同步(Sync)**的机制，而不是所有 Goroutine 都直接修改同一份共享状态。
-- Scheduler:基于 **GMP** 模型，调度器会将 Goroutine 分配到系统线程中执行，并通过 M 和 P 的配合高效管理并发
-  - G：Goroutine
-  - M：系统线程（Machine）
-  - P：逻辑处理器（Processor）
+- Channels: Go provides a mechanism for **data communication + synchronization** between goroutines, rather than having every goroutine directly modify the same shared state.
+- Scheduler: based on the **GMP** model, the scheduler assigns goroutines to OS threads and efficiently manages concurrency through coordination between M and P.
+  - G: Goroutine
+  - M: OS thread (Machine)
+  - P: logical processor (Processor)
 
   ```plain
       G G G G G
@@ -258,21 +275,21 @@
        CPU CPU
   ```
 
-  - Goroutine 怎么被调度到 OS Thread？
-    - 新创建的 Goroutine 会进入可运行状态，并被放入调度队列。与 P 关联的 M 会从可运行队列获取 G 执行。
-    - **P**：Go Scheduler 还会进行**任务窃取(Work Stealing)**等调度，使不同 P 之间的工作量更加均衡。
-    - **G**：如果 Goroutine 因为某些阻塞操作无法继续执行，Runtime 会尽量调度其他可运行 Goroutine，提高线程利用率。
+  - How is a goroutine scheduled onto an OS thread?
+    - A newly created goroutine enters the runnable state and is placed in a run queue. An M associated with a P retrieves a G from the run queue and executes it.
+    - **P**: The Go scheduler also uses **work stealing** and other scheduling techniques to balance workloads among different Ps.
+    - **G**: If a goroutine cannot continue because of certain blocking operations, the runtime tries to schedule another runnable goroutine, improving thread utilization.
 
 ### Goroutine
 
-> 解决excution，让多个任务并发执行
+> Addresses execution: allows multiple tasks to run concurrently.
 
-- vs **Thread**：Goroutine适合大量I/O并发任务
-  - 它的初始栈比较小，而且栈可以动态增长
-  - 大量 Goroutine 可以被 multiplex 到较少的 OS Thread 上
-  - 调度主要由 Go Runtime 完成，不需要每次都依赖操作系统进行线程级调度 -使用 go 关键字就可以启动一个 Goroutine：`go doSomething(x,y,z)`
-- 同一个程序中的所有 goroutine 共享同一个地址空间
-- **Select** 语句：使得一个 goroutine 可以等待多个channel，哪个 channel 先准备好，就执行哪个 case。类似于if/else if
+- vs. **Thread**: Goroutines are suitable for large numbers of concurrent I/O tasks.
+  - Their initial stacks are small and can grow dynamically.
+  - Many goroutines can be multiplexed onto fewer OS threads.
+  - Scheduling is mainly handled by the Go runtime, without requiring OS-level thread scheduling every time. Use the `go` keyword to start a goroutine: `go doSomething(x,y,z)`.
+- All goroutines in the same program share the same address space.
+- **Select** statement: allows a goroutine to wait on multiple channels; whichever channel is ready first determines which case runs. Similar to `if`/`else if`.
 
   ```go
       func main() {
@@ -299,9 +316,9 @@
       }
   ```
 
-  - 典型用途：Timeout，常用于HTTP请求、数据库查询
+  - Typical use: timeouts, often for HTTP requests and database queries.
     ```
-        //任务完成 vs 2秒超时，谁先发生执行谁
+        // Task completion vs. a 2-second timeout: execute whichever occurs first
        select {
         case result := <-resultCh:
             fmt.Println(result)
@@ -309,10 +326,10 @@
             fmt.Println("timeout")
         }
     ```
-  - select + default：non-blocking operation
+  - `select` + `default`: non-blocking operation
 
     ```go
-        //如果 channel 当前没有数据不会等待，直接走default
+        // If the channel has no data right now, do not wait; go directly to default
         select {
         case value := <-ch:
             fmt.Println(value)
@@ -322,24 +339,24 @@
         }
     ```
 
-- sync.WaitGroup 用于等待多个 Goroutine 完成
+- `sync.WaitGroup` is used to wait for multiple goroutines to finish.
 
 ### Channel
 
-> 解决goroutine 之间怎么传递数据和同步
+> Addresses how data is passed and synchronized between goroutines.
 
-- Unbuffered Channel(默认)：强调**同步**，发送端发送数据，必须同时有接收端相应的接收数据
-- Buffered Channel：允许发送端的数据发送和接收端的数据获取处于**异步**状态
+- Unbuffered Channel (default): emphasizes **synchronization**; when a sender sends data, a receiver must be ready to receive it.
+- Buffered Channel: allows the sender to send and the receiver to retrieve data **asynchronously**.
   ```go
-  //声明
+  // Declaration
   chan int
-  # 使用 make 函数创建，使用 <- 操作符发送和接收数据。如果未指定方向，则为双向通道
-  //默认创建
+  # Create using make, and use the <- operator to send and receive data. If no direction is specified, the channel is bidirectional.
+  // Create an unbuffered channel (default)
   ch := make(chan int)
-  //带缓冲区创建
+  // Create a buffered channel
   ch := make(chan int, 100)
   ```
-- close：发送方负责告诉接收方，不会再发送数据
+- `close`: the sender is responsible for telling the receiver that no more data will be sent.
 
   ```go
       ch := make(chan int)
@@ -353,10 +370,10 @@
       }()
   ```
 
-  - 判断Channel是否关闭
+  - Check whether a channel is closed
     ```go
         value, ok := <-ch
-        //ok == false时，表示Channel已关闭且缓存数据也读完
+        // When ok == false, the channel is closed and all buffered data has been read
         if !ok {
             fmt.Println("channel closed")
         }
@@ -364,9 +381,9 @@
 
 ### Sync
 
-> 解决多个 goroutine 访问共享内存时，怎么保证数据正确
+> Addresses how to ensure data correctness when multiple goroutines access shared memory.
 
-#### Mutex(Mutual Exclusion互斥锁)
+#### Mutex (Mutual Exclusion Lock)
 
 #### RWMutex
 
@@ -374,18 +391,20 @@
 
 #### Atomic
 
-## 类型断言、类型比较
+## Type Assertions and Type Comparisons
 
-- 类型比较
+- Type comparisons
   - == or !=
     bool
-    整数
-    浮点数
-    复数
+    integer
+    floating-point number
+    complex number
     string
     pointer
     channel
-    interface（动态值必须可比较）
-    array（元素可比较）
-    struct（所有字段可比较）
-  - 不可以用于Slice/Map的内容，只能和 nil 比较
+    interface (the dynamic value must be comparable)
+    array (its elements must be comparable)
+    struct (all its fields must be comparable)
+  - Cannot be used to compare the contents of slices/maps; these can only be compared with `nil`.
+
+---

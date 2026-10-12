@@ -4,15 +4,18 @@ const {
   max = 'max-w-6xl', // change to max-w-5xl / max-w-7xl if you like
   padding = 'px-4 sm:px-6', // page horizontal padding
   y = 'py-8 md:py-10', // vertical spacing
+  contentPadding = 'p-6 sm:p-10',
+  border = 'border',
 } = Astro.props;
 ---
 
 <div class:list={['mx-auto', max, padding, y]}>
   <div
     class:list={[
-      'rounded-3xl border border-white/30 bg-white/40 shadow-lg backdrop-blur-xl',
+      'rounded-3xl border-white/30 bg-white/40 shadow-lg backdrop-blur-xl',
+      border,
       'dark:border-white/10 dark:bg-slate-900/40',
-      'p-6 sm:p-10',
+      contentPadding,
       className,
     ]}
   >

@@ -11,9 +11,11 @@ import type { MetaData } from '~/types';
 
 export interface Props {
   metadata?: MetaData;
+  surfacePadding?: string;
+  surfaceBorder?: string;
 }
 
-const { metadata } = Astro.props;
+const { metadata, surfacePadding, surfaceBorder } = Astro.props;
 ---
 
 <Layout metadata={metadata}>
@@ -26,7 +28,7 @@ const { metadata } = Astro.props;
   <main>
     <GlassBackdrop />
 
-    <GlassSurface>
+    <GlassSurface contentPadding={surfacePadding} border={surfaceBorder}>
       <slot />
     </GlassSurface>
   </main>

@@ -28,11 +28,9 @@ const blocks = (BLOG_BLOCKS || []).map((block) => ({
     </div>
   </div>
 
-  <div class="relative mx-auto max-w-6xl px-4 py-12 sm:py-16">
-    <!-- Hero glass card -->
-    <div
-      class="rounded-3xl border border-white/30 bg-white/40 p-6 shadow-lg backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/40 sm:p-10"
-    >
+  <div class="relative">
+    <!-- Hero content inside the page's glass border -->
+    <div class="p-6 sm:p-10">
       <div class="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
         <div>
           <p class="text-sm font-semibold opacity-80">QingTaoRS Devlog</p>
@@ -104,7 +102,7 @@ const blocks = (BLOG_BLOCKS || []).map((block) => ({
     </div>
 
     <!-- Latest posts -->
-    <div class="mt-10">
+    <div class="mt-10 px-6 pb-6 sm:px-10 sm:pb-10">
       <div class="flex items-end justify-between">
         <h2 class="text-xl font-bold">Latest posts</h2>
         <a class="text-sm underline opacity-80 hover:opacity-100" href="/blog">View all</a>
