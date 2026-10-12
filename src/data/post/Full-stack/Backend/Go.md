@@ -1,5 +1,5 @@
 ---
-title: 'Go'
+title: 'GO'
 
 publishDate: 2026-9-23
 
