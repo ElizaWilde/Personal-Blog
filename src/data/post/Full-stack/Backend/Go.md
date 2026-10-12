@@ -7,7 +7,7 @@ updateDate: 2026-10-12
 
 draft: false
 
-excerpt: '' # 摘抄
+excerpt: '' # 摘  抄
 
 category: 'Backend'
 
@@ -15,10 +15,11 @@ author: 'Eliza'
 
 metadata: {}
 ---
+
 # Introduction
 
 - Native concurrency: Goroutines and Channels
-Statically typed language (all variable types are determined at compile time), but supports type inference
+  Statically typed language (all variable types are determined at compile time), but supports type inference
 - Built-in garbage collection (GC): uses a concurrent tri-color mark-and-sweep algorithm
 - Easy deployment: the compiler supports cross-compilation (compiling for different platforms)
 - Application areas: cloud-native systems and infrastructure, microservices and API development, CLI tools, network programming and distributed systems, blockchain, AI and machine learning (emerging area)
